@@ -8,6 +8,7 @@ $(document).ready(function(){
     }
   }
 
+  // TODO: what if a book has multiple authors??
   class Book {
     constructor (title, author, data) {
       this.title = title;
@@ -59,9 +60,8 @@ $(document).ready(function(){
     }),
   ]
 
+  // spit out an li for each book, append to page
   books.forEach (function (book) {
-    // var isReread = book.reread;
-    // var isFavorite = book.favorite;
     var isReread = book.reread ? '(reread)' : '';
     var isFavorite = book.favorite ? '<strong>!</strong>' : '';
     var isYA = book.ya ? '(YA)' : '';
@@ -69,10 +69,43 @@ $(document).ready(function(){
     $('ol').append(bookHTML);
   })
 
-  // And now you can do stuff like
-  books.filter(book => {
+
+  // do stuff like
+  var femaleBooks = books.filter(book => {
     return book.author.gender === 'female';
   })
+
+  var listRaces = [];
+
+  for (var i = 0; i < books.length; i++) {
+    // for now just assuming that no author has more than 2 races
+    listRaces.push(books[i].author.race[0]);
+    if (books[i].author.race.length > 1) {
+      listRaces.push(books[i].author.race[1]);
+    }
+  }
+
+  var uniqueRaces = Array.from(new Set(listRaces));
+
+  // uniqueRaces.forEach(function(value) {
+    // need to interpolate race into the variable ... ?
+  //   var [race]authors = books.filter(book => {
+  //     return book.author.race === value;
+  //   })
+  // })
+  // then you would have groups of whiteAuthors, etc.
+  // and I think it would include duplicate entries for authors we read more than once, which I think i want but is worth considering further
+
+  console.log('2')
+
+  // thought1: iterate through properties of authors to get all the possible props and values
+  // then create a filter function that does something like
+  // function (prop, value) {
+  //   books.filter(book => {
+  //     return book.author.[PROP] === 'female';
+  //   })
+  // }
+  
 
 })
 
